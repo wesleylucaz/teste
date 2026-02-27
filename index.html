@@ -3,9 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <title>Intestino Activo Quiz</title>
+    <script>
+      // Fix for "Cannot set property fetch of #<Window> which has only a getter"
+      try {
+        const originalFetch = window.fetch;
+        Object.defineProperty(window, 'fetch', {
+          value: originalFetch,
+          writable: true,
+          configurable: true
+        });
+      } catch (e) {}
+
+      // Fix for "Converting circular structure to JSON"
+      // Some tracking scripts try to stringify objects with circular references
+      const originalStringify = JSON.stringify;
+      JSON.stringify = function(obj, replacer, indent) {
+        try {
+          return originalStringify(obj, replacer, indent);
+        } catch (e) {
+          if (e.message.includes('circular')) {
+            const cache = new Set();
+            return originalStringify(obj, (key, value) => {
+              if (typeof value === 'object' && value !== null) {
+                if (cache.has(value)) return '[Circular]';
+                cache.add(value);
+              }
+              return replacer ? replacer(key, value) : value;
+            }, indent);
+          }
+          throw e;
+        }
+      };
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+      fbq("init", "1756996895260914");
+      fbq("track", "PageView");
+    </script>
+    <!-- End Facebook Pixel Code -->
+
+    <!-- UTMify Pixel -->
+    <script>
+      window.pixelId = "69a225422290a3c8d25bf29c";
+      var a = document.createElement("script");
+      a.setAttribute("async", "");
+      a.setAttribute("defer", "");
+      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+      document.head.appendChild(a);
+    </script>
+    <!-- End UTMify Pixel -->
   </head>
   <body>
+    <!-- Facebook Pixel Code (noscript) -->
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=1756996895260914&ev=PageView&noscript=1"
+      />
+    </noscript>
+    <!-- End Facebook Pixel Code (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

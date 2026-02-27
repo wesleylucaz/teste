@@ -55,7 +55,7 @@ const STEPS = [
     subtext: "Diseñada para adaptarse a tu rutina diaria.",
     image: "https://iili.io/qfX4dFI.jpg",
     buttons: [
-      { text: "👉 Sí, quiero acceder ahora", primary: true, cta: true }
+      { text: "👉 SI QUIERO ACCEDER", primary: true, cta: true }
     ]
   }
 ];
@@ -65,6 +65,8 @@ export default function App() {
   const [isFinished, setIsFinished] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const REDIRECT_URL = 'http://protocolopresentacion.easymarketpay.com/';
 
   useEffect(() => {
     if (isFinished && loadingProgress < 100) {
@@ -85,7 +87,7 @@ export default function App() {
   useEffect(() => {
     if (showConfirmation) {
       const redirectTimer = setTimeout(() => {
-        window.location.href = 'https://manuscritoazul.online/';
+        window.location.href = REDIRECT_URL;
       }, 3500); // Wait 3.5 seconds for user to see the confirmation before redirecting
       return () => clearTimeout(redirectTimer);
     }
@@ -98,7 +100,8 @@ export default function App() {
     if (currentStepIndex < STEPS.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      setIsFinished(true);
+      // Redirect directly on the last step, bypassing loading
+      window.location.href = REDIRECT_URL;
     }
   };
 
@@ -178,9 +181,9 @@ export default function App() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full py-4 px-6 bg-red-600 text-white rounded-2xl font-bold text-lg shadow-lg shadow-red-200 animate-pulse-red"
-                  onClick={() => window.location.href = 'https://manuscritoazul.online/'}
+                  onClick={() => window.location.href = 'http://protocolopresentacion.easymarketpay.com/'}
                 >
-                  👉 ACCEDER AHORA
+                  👉 QUIERO EL PLAN AHORA
                 </motion.button>
               </motion.div>
             )}
@@ -296,7 +299,7 @@ export default function App() {
                       key={i}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={handleNext}
+                      onClick={() => handleNext()}
                       className={`
                         w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2
                         ${isLastStep 
